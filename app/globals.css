@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.tox-notification--warning {
+    display: none !important;
+}
+
+.tox-statusbar__branding {
+    display: none !important;
+}
+
+.tox-statusbar__resize-handle {
+    display: none !important;
+}

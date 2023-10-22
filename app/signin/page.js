@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 const SignIn = () => {
 const router = useRouter();
 
-    if (typeof window !== 'undefined') {
+    if (process.browser) {
         if (localStorage.getItem('pocketbase_auth')){
             router.push('/admin');
         }
