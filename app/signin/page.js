@@ -3,11 +3,13 @@
 import PocketBase from 'pocketbase';
 let pb = new PocketBase('https://copts-org-blog.pockethost.io');
 import { useRouter } from 'next/navigation';
+import CHead from "@/components/CHead";
+
 const SignIn = () => {
-const router = useRouter();
+    const router = useRouter();
 
     if (process.browser) {
-        if (localStorage.getItem('pocketbase_auth')){
+        if (localStorage.getItem('pocketbase_auth')) {
             router.push('/admin');
         }
     }
@@ -22,6 +24,7 @@ const router = useRouter();
 
     return (
         <>
+            <CHead title={'Sign In'} />
             <form onSubmit={login} className='w-full h-screen flex flex-col justify-center items-center'>
                 <h1 className='text-4xl font-semibold mb-4'>Sign In</h1>
                 <input

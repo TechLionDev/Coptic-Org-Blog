@@ -1,5 +1,6 @@
 'use client';
 
+import CHead from "@/components/CHead";
 import { useRouter } from "next/navigation";
 
 const AdminHome = () => {
@@ -10,6 +11,7 @@ const AdminHome = () => {
     }
     return (
         <>
+            <CHead title={'Admin Home'} />
             <div class="p-6 gap-4 flex flex-col">
                 <h1 className='text-4xl font-semibold'>Welcome, {user?.name}!</h1>
                 <h2 className='text-2xl font-semibold'>You are logged in as an administrator.</h2>

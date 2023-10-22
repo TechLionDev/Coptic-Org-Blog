@@ -3,6 +3,7 @@
 import PocketBase from 'pocketbase';
 let pb = new PocketBase('https://copts-org-blog.pockethost.io');
 import { useEffect, useState } from 'react';
+import CHead from "@/components/CHead";
 
 const Post = ({ params }) => {
     const [post, setPost] = useState();
@@ -15,10 +16,11 @@ const Post = ({ params }) => {
             setPost(res);
             setLoading(false);
         })();
-    },[]);
+    }, []);
 
     return (
         <>
+            <CHead title={post?.title} />
             {loading ? (
                 <div className="flex w-full p-6 items-center justify-center">
                     <p>Loading...</p>

@@ -4,6 +4,7 @@ import PocketBase from 'pocketbase';
 let pb = new PocketBase('https://copts-org-blog.pockethost.io');
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import CHead from "@/components/CHead";
 
 const Posts = () => {
     const [posts, setPosts] = useState();
@@ -21,6 +22,7 @@ const Posts = () => {
 
     return (
         <>
+            <CHead title={'Posts'} />
             {loading ? (
                 <div className="flex w-full p-6 items-center justify-center">
                     <p>Loading...</p>

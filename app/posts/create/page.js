@@ -5,6 +5,7 @@ let pb = new PocketBase('https://copts-org-blog.pockethost.io');
 import TextEditor from "@/components/TextEditor";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import CHead from "@/components/CHead";
 
 
 export default function CreatePost() {
@@ -36,6 +37,7 @@ export default function CreatePost() {
 
     return (
         <>
+            <CHead title={'Create Post'} />
             <div className="flex w-full p-6 items-center justify-center">
                 <form onSubmit={createPost} className="w-full flex flex-col">
                     <input className="w-full border border-gray-300 rounded-md p-2 mb-4" type="text" placeholder="Title" />
