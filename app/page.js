@@ -1,3 +1,5 @@
+'use client'
+
 import CHead from "@/components/CHead";
 
 const Home = () => {
