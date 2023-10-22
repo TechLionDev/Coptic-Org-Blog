@@ -9,6 +9,11 @@ import { useRouter } from 'next/navigation';
 
 export default function CreatePost() {
     let router = useRouter();
+    if (process.browser) {
+        if (!localStorage.getItem('pocketbase_auth')) {
+            router.push('/signin');
+        }
+    }
     const [richTextContent, setRichTextContent] = useState('');
     const [loading, setLoading] = useState(false);
 

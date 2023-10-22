@@ -23,6 +23,7 @@ const router = useRouter();
     return (
         <>
             <form onSubmit={login} className='w-full h-screen flex flex-col justify-center items-center'>
+                <h1 className='text-4xl font-semibold mb-4'>Sign In</h1>
                 <input
                     type="text"
                     name="username"
