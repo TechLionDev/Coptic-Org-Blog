@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 
-const TextEditor = ({ onRichTextChange }) => {
+const TextEditor = ({ onRichTextChange, initialHTML }) => {
     const editorRef = useRef(null);
 
     const handleEditorChange = (content, editor) => {
@@ -16,7 +16,7 @@ const TextEditor = ({ onRichTextChange }) => {
         <>
             <Editor
                 onInit={(evt, editor) => editorRef.current = editor}
-                initialValue=""
+                initialValue={initialHTML}
                 init={{
                     plugins: 'advcode advlist advtable autocorrect autolink autosave casechange charmap checklist code codesample directionality editimage emoticons export footnotes formatpainter image importcss inlinecss insertdatetime link linkchecker lists media mediaembed powerpaste preview save searchreplace table tableofcontents tinymcespellchecker typography visualblocks visualchars wordcount',
                     menubar: false,
@@ -35,6 +35,7 @@ const TextEditor = ({ onRichTextChange }) => {
                     content_css: 'default',
                     content_style: 'body { font-family: Helvetica, Arial, sans-serif; font-size: 14px }',
                     width: '100%',
+                    branding: false,
                 }}
                 onEditorChange={handleEditorChange}
             />
