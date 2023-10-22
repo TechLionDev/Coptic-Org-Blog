@@ -2,8 +2,8 @@
 
 const AdminHome = () => {
     let user
-    if (typeof window !== 'undefined') {
-        user = JSON.parse(localStorage.getItem('pocketbase_auth'));
+    if (process.browser) {
+        user = JSON.parse(localStorage.getItem('pocketbase_auth')).model;
     }
     return (
         <>
