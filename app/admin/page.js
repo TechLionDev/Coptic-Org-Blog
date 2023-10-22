@@ -1,7 +1,10 @@
 'use client';
 
 const AdminHome = () => {
-    let user = JSON.parse(localStorage.getItem('pocketbase_auth')).model;
+    let user
+    if (typeof window !== 'undefined') {
+        user = JSON.parse(localStorage.getItem('pocketbase_auth'));
+    }
     return (
         <>
             <div className='w-full h-screen flex flex-col justify-center items-center'>

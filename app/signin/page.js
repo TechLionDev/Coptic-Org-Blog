@@ -6,8 +6,10 @@ import { useRouter } from 'next/navigation';
 const SignIn = () => {
 const router = useRouter();
 
-    if (localStorage.getItem('pocketbase_auth')){
-        router.push('/admin');
+    if (typeof window !== 'undefined') {
+        if (localStorage.getItem('pocketbase_auth')){
+            router.push('/admin');
+        }
     }
 
     const login = async (e) => {
