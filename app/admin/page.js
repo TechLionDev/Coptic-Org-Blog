@@ -7,7 +7,11 @@ const AdminHome = () => {
     const router = useRouter();
     let user
     if (process.browser) {
-        user = JSON.parse(localStorage.getItem('pocketbase_auth')).model;
+        if (localStorage.getItem('pocketbase_auth')) {
+            user = JSON.parse(localStorage.getItem('pocketbase_auth')).model;
+        } else {
+            router.push('/signin');
+        }
     }
     return (
         <>
