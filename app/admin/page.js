@@ -8,7 +8,7 @@ const AdminHome = () => {
     return (
         <>
             <div className='w-full h-screen flex flex-col justify-center items-center'>
-                <h1 className='text-4xl font-semibold'>Welcome, {user.name}!</h1>
+                <h1 className='text-4xl font-semibold'>Welcome, {user?.name}!</h1>
                 <h2 className='text-2xl font-semibold'>You are logged in as an administrator.</h2>
             </div>
         </>
