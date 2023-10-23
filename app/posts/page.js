@@ -28,7 +28,7 @@ const Posts = () => {
                     <p>Loading...</p>
                 </div>
             ) : (
-                <div className="flex flex-col gap- w-full p-6 items-center justify-center">
+                <div className="grid gap-4 grid-cols-3 w-full p-6 ">
                     {posts.map((post, index) => (
                         <div key={index} className="flex w-full items-center justify-center shadow-md hover:shadow-xl rounded-lg border hover:cursor-pointer text-center px-6">
                             <Link href={`/posts/view/${post.id}`} className='flex flex-grow items-center justify-center'>
