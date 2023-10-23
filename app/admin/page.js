@@ -7,21 +7,19 @@ const AdminHome = () => {
     const router = useRouter();
     let user
     if (process.browser) {
-        user = JSON.parse(localStorage.getItem('pocketbase_auth')).model;
+        if (localStorage.getItem('pocketbase_auth')) {
+            user = JSON.parse(localStorage.getItem('pocketbase_auth')).model;
+        } else {
+            router.push('/signin');
+        }
     }
     return (
         <>
             <CHead title={'Admin Home'} />
-            <div class="p-6 gap-4 flex flex-col">
-                <h1 className='text-4xl font-semibold'>Welcome, {user?.name}!</h1>
-                <h2 className='text-2xl font-semibold'>You are logged in as an administrator.</h2>
-                <div class="flex gap-2 w-full">
-                    <button className="p-6 bg-blue-300 font-bold rounded-lg w-full" onClick={() => { router.push('/posts/create') }}>
-                        Create Post
-                    </button>
-                    <button className="p-6 bg-blue-300 font-bold rounded-lg w-full" onClick={() => { router.push('/posts') }}>
-                        View Posts
-                    </button>
+            <div className="h-screen p-8">
+                <div className="grid grid-cols-3 gap-4">
+                    <button onClick={()=>{router.push('/admin/posts/create')}} className="p-4 bg-blue-400 text-white font-bold hover:bg-blue-500 rounded-lg">Create New Post</button>
+                    <button onClick={()=>{router.push('/admin/posts/')}} className="p-4 bg-blue-400 text-white font-bold hover:bg-blue-500 rounded-lg">View All Posts</button>
                 </div>
             </div>
         </>
