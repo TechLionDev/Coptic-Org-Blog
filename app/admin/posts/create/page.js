@@ -32,7 +32,7 @@ export default function CreatePost() {
             body
         })
         console.log(res);
-        router.push('/posts/view/' + res.id);
+        router.push('/admin/posts/view/' + res.id);
     }
 
     return (

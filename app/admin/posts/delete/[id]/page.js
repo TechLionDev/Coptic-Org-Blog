@@ -25,7 +25,7 @@ const Post = ({ params }) => {
         e.preventDefault();
         let res = await pb.collection('posts').delete(params.id);
         console.log(res);
-        router.push('/posts');
+        router.push('/admin/posts');
     }
 
     return (
@@ -39,7 +39,7 @@ const Post = ({ params }) => {
                 <>
                     <div className="flex flex-col gap-4 w-full p-6 items-center justify-center">
                         <div>
-                            <a href="/posts" className="text-blue-500 hover:text-blue-700 font-bold">Back to Posts</a>
+                            <a href="/admin/posts" className="text-blue-500 hover:text-blue-700 font-bold">Back to Posts</a>
                         </div>
                         <div className="w-full flex flex-col border rounded-lg p-6">
                             <h1 className="text-2xl font-bold">{post.title}</h1>
@@ -51,7 +51,7 @@ const Post = ({ params }) => {
                         <div className="relative h-fit w-fit max-h-screen max-w-screen-lg p-6 bg-white shadow-md rounded-md overflow-auto">
                             <button
                                 className="absolute top-4 right-4 text-red-500 hover:animate-spin hover:text-red-800"
-                                onClick={() => router.push('/posts')}
+                                onClick={() => router.push('/admin/posts')}
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +73,7 @@ const Post = ({ params }) => {
                             <div className="mt-4 flex gap-4 justify-end">
                                 <button
                                     className="border-green-500 hover:border-green-700 text-green-500 border-2 hover:text-green-700 font-bold py-1 px-2 rounded"
-                                    onClick={() => router.push('/posts')}
+                                    onClick={() => router.push('/admin/posts')}
                                 >
                                     Cancel
                                 </button>

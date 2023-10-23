@@ -42,7 +42,7 @@ const Post = ({ params }) => {
         let body = richTextContent;
         let res = await pb.collection('posts').update(params.id, { title, body })
         console.log(res);
-        router.push('/posts/view/' + res.id);
+        router.push('/admin/posts/view/' + res.id);
     }
 
 
@@ -56,7 +56,7 @@ const Post = ({ params }) => {
             ) : (
                 <div className="flex flex-col gap-4 w-full p-6 items-center justify-center">
                     <div>
-                        <a href="/posts" className="text-blue-500 hover:text-blue-700 font-bold">Back to Posts</a>
+                        <a href="/admin/posts" className="text-blue-500 hover:text-blue-700 font-bold">Back to Posts</a>
                     </div>
                     <form onSubmit={updatePost} className="w-full flex flex-col">
                         <input className="w-full border border-gray-300 rounded-md p-2 mb-4" type="text" placeholder="Title" value={title} onChange={(e) => { setTitle(e.target.value) }} />
