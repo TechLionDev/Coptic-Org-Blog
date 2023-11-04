@@ -6,7 +6,6 @@ const Home = () => {
   return (
     <>
       <CHead title={'Home'} />
-      
     </>
   );
 }

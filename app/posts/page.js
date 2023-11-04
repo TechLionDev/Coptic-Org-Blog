@@ -1,50 +1,70 @@
 'use client';
 
 import PocketBase from 'pocketbase';
+import * as TablerIcons from '@tabler/icons-react';
+
 let pb = new PocketBase('https://copts-org-blog.pockethost.io');
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import {useEffect, useState} from 'react';
+import {useRouter} from "next/navigation"
 import CHead from "@/components/CHead";
+import AdminSidebar from "@/components/AdminSidebar";
 
 const Posts = () => {
-    const [posts, setPosts] = useState();
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        (async () => {
-            let res = await pb.collection('posts').getFullList({
-                // sort by created so that the newest created is the 1st index
-                sort: 'created',
-            });
-            setPosts(res);
-            setLoading(false);
-        })();
-    }, []);
+  const router = useRouter();
+  const [posts, setPosts] = useState();
+  const [loading, setLoading] = useState(true);
+  const [adminSideBarIsCollapsed, setAdminSideBarIsCollapsed] = useState(false);
 
 
+  useEffect(() => {
+    (async () => {
+      let res = await pb.collection('posts').getFullList({
+        // sort by created so that the newest created is the 1st index
+        sort: 'created',
+      });
+      setPosts(res);
+      setLoading(false);
+    })();
+  }, []);
 
-    return (
+  return (
+    <>
+      <CHead title={'Posts'}/>
+      {loading ? (
+        <div className="transition-all duration-500 flex">
+          <div className="transition-all duration-500 flex w-full p-6 items-center justify-center">
+            <p>Loading...</p>
+          </div>
+        </div>
+      ) : (
         <>
-            <CHead title={'Posts'} />
-            {loading ? (
-                <div className="flex w-full p-6 items-center justify-center">
-                    <p>Loading...</p>
-                </div>
-            ) : (
-                <div className="grid gap-4 grid-cols-3 w-full p-6 ">
-                    {posts.map((post, index) => (
-                        <div key={index} className="flex w-full items-center justify-center shadow-md hover:shadow-xl rounded-lg border hover:cursor-pointer text-center px-6">
-                            <Link href={`/posts/view/${post.id}`} className='flex flex-grow items-center justify-center'>
-                                <div class="flex flex-col">
-                                    <p className="px-6 pt-6 text-2xl font-bold">{post.title}</p>
-                                    <p className="px-6 pb-6 text-lg">{post.body.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().split(' ').slice(0, 15).join(' ')}...</p>
-                                </div>
-                            </Link>
-                        </div>
-                    ))}
-                </div>
-            )}
+          <div className="transition-all duration-500 flex">
+            <div
+              className="transition-all duration-500 grid grid-cols-3 gap-4 p-4 overflow-y-auto max-h-screen h-fit w-full">
+              {posts.map((post, index) => (
+                <a
+                  href={'/posts/view/' + post.id}
+                  key={index}
+                  className="transition-all duration-500 bg-sky-50 shadow overflow-auto rounded-lg p-4 h-full flex-col flex gap-2">
+                  <div className="flex flex-col justify-center pt-2 gap-3">
+                    {post.coverImage && <div>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        className={'transition-all duration-500 rounded-lg h-28 max-h-28 min-h-28 w-full object-cover'}
+                        src={'https://copts-org-blog.pockethost.io/api/files/posts/' + post.id + '/' + post.coverImage + '?thumb=0x100'}
+                        alt={post.title}/>
+                    </div>}
+                    <p className={'transition-all duration-500 text-xl font-bold text-center w-full'}>
+                      {post.title.length > 29 ? `${post.title.substring(0, 29)}...` : post.title}
+                    </p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
         </>
-    );
+      )}
+    </>
+  );
 }
 export default Posts;

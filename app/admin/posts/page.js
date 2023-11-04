@@ -1,94 +1,106 @@
 'use client';
 
 import PocketBase from 'pocketbase';
+import * as TablerIcons from '@tabler/icons-react';
+
 let pb = new PocketBase('https://copts-org-blog.pockethost.io');
-import { useEffect, useState } from 'react';
-import { useRouter } from "next/navigation"
+import {useEffect, useState} from 'react';
+import {useRouter} from "next/navigation"
 import CHead from "@/components/CHead";
+import AdminSidebar from "@/components/AdminSidebar";
 
 const Posts = () => {
-    const router = useRouter();
-    const [posts, setPosts] = useState();
-    const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const [posts, setPosts] = useState();
+  const [loading, setLoading] = useState(true);
+  const [adminSideBarIsCollapsed, setAdminSideBarIsCollapsed] = useState(false);
 
-    useEffect(() => {
-        (async () => {
-            let res = await pb.collection('posts').getFullList({
-                // sort by created so that the newest created is the 1st index
-                sort: 'created',
-            });
-            setPosts(res);
-            setLoading(false);
-        })();
-    }, []);
 
-    // JavaScript function to format the date
-    function formatDate(dateString) {
-        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
-        return new Date(dateString).toLocaleString(undefined, options);
-    }
+  useEffect(() => {
+    (async () => {
+      let res = await pb.collection('posts').getFullList({
+        // sort by created so that the newest created is the 1st index
+        sort: 'created',
+      });
+      setPosts(res);
+      setLoading(false);
+    })();
+  }, []);
 
-    return (
+  return (
+    <>
+      <CHead title={'Posts'}/>
+      {loading ? (
+        <div className="transition-all duration-500 flex">
+          <AdminSidebar
+            currSlug={'/admin/posts'}
+            isCollapsed={adminSideBarIsCollapsed}
+            onCollapse={() => {
+              setAdminSideBarIsCollapsed(!adminSideBarIsCollapsed);
+            }}/>
+          <div className="transition-all duration-500 flex w-full p-6 items-center justify-center">
+            <p>Loading...</p>
+          </div>
+        </div>
+      ) : (
         <>
-            <CHead title={'Posts'} />
-            {loading ? (
-                <div className="flex w-full p-6 items-center justify-center">
-                    <p>Loading...</p>
+          <div className="transition-all duration-500 flex">
+            <AdminSidebar
+              currSlug={'/admin/posts'}
+              isCollapsed={adminSideBarIsCollapsed}
+              onCollapse={() => {
+                setAdminSideBarIsCollapsed(!adminSideBarIsCollapsed);
+              }}/>
+            <div
+              className="transition-all duration-500 grid grid-cols-3 gap-4 p-4 overflow-y-auto max-h-screen h-fit w-full">
+              {posts.map((post, index) => (
+                <div key={index}
+                     className="transition-all duration-500 bg-sky-50 shadow overflow-auto rounded-lg p-4 h-full flex-col flex gap-2">
+                  <div className="flex flex-col justify-center pt-2 gap-3">
+                    {post.coverImage && <div>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        className={'transition-all duration-500 rounded-lg h-28 max-h-28 min-h-28 w-full object-cover'}
+                        src={'https://copts-org-blog.pockethost.io/api/files/posts/' + post.id + '/' + post.coverImage + '?thumb=0x100'}
+                        alt={post.title}/>
+                    </div>}
+                    <p className={'transition-all duration-500 text-xl font-bold text-center w-full'}>
+                      {post.title.length > 29 ? `${post.title.substring(0, 29)}...` : post.title}
+                    </p>
+                  </div>
+                  <div className={'transition-all duration-500 flex justify-evenly items-end h-full gap-3 pt-2'}>
+                    <button
+                      onClick={() => {
+                        router.push('/admin/posts/view/' + post.id);
+                      }}
+                      className={'transition-all duration-500 bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg flex'}>
+                      <TablerIcons.IconEye/>
+                      <p>View</p>
+                    </button>
+                    <button
+                      onClick={() => {
+                        router.push('/admin/posts/edit/' + post.id);
+                      }}
+                      className={'transition-all duration-500 bg-sky-500 hover:bg-sky-600 text-white p-2 rounded-lg flex'}>
+                      <TablerIcons.IconPencil/>
+                      <p>Edit</p>
+                    </button>
+                    <button
+                      onClick={() => {
+                        router.push('/admin/posts/delete/' + post.id);
+                      }}
+                      className={'transition-all duration-500 bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg flex'}>
+                      <TablerIcons.IconTrash/>
+                      <p>Delete</p>
+                    </button>
+                  </div>
                 </div>
-            ) : (
-                <>
-                    <div className='text-blue-600 p-4 flex hover:gap-6 hover:cursor-pointer' onClick={()=>{router.push('/admin')}}>
-                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-                        <p>Back To Admin Dashboard</p>
-                    </div>
-                    <div className="flex flex-col w-full gap-8 px-1 py-2">
-                        <div className="flex w-auto overflow-x-scroll">
-                            <table className="overflow-x-auto divide-y divide-gray-300 md:min-w-full">
-                                <thead className="bg-gray-50">
-                                    <tr>
-                                        <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                                            Title
-                                        </th>
-                                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                            Posted On
-                                        </th>
-                                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                            Actions
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
-                                    {posts.map((post) => (
-                                        <tr key={post.id}>
-                                            <td className="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
-                                                {post.title}
-                                            </td>
-                                            <td className="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
-                                                {formatDate(post.created)}
-                                            </td>
-                                            <td className="px-3 py-4 text-sm whitespace-nowrap">
-                                                <a className="hover:text-green-500 decoration-dotted underline-offset-4 hover:underline" href={`/admin/posts/view/${post.id}`}>
-                                                    View
-                                                </a>{" "}
-                                                |{" "}
-                                                <a className="hover:text-blue-500 decoration-dotted underline-offset-4 hover:underline" href={`/admin/posts/edit/${post.id}`}>
-                                                    Edit
-                                                </a>{" "}
-                                                |{" "}
-                                                <a className="hover:text-red-500 decoration-dotted underline-offset-4 hover:underline" href={`/admin/posts/delete/${post.id}`}>
-                                                    Delete
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                    <button onClick={()=>{router.push('/admin/posts/create')}} className="p-4 bg-blue-400 text-white font-bold hover:bg-blue-500 rounded-lg">Create New Post</button>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </>
-            )}
+              ))}
+            </div>
+          </div>
         </>
-    );
+      )}
+    </>
+  );
 }
 export default Posts;
